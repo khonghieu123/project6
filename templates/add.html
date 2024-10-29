@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Thêm Chi Phí</h3>
+            <form action="/addexpense" method="POST">
+
+                <div class="form-group">
+                     <label for="date">Ngày</label>
+                     <input class="form-control" type="datetime-local" name="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="expensename">Tên Chi Phí</label>
+                    <input class="form-control" type="text" name="expensename" id="expensename" required>
+                </div>
+                <div class="form-group">
+                     <label for="amount">Số Tiền Chi Phí</label>
+                      <input class="form-control" type="number" min="0" name="amount" id="amount" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymode">Phương Thức Thanh Toán</label>
+                    <select class="form-control" name="paymode" id="paymode" required>
+                        <option selected hidden>Chọn Phương Thức</option>
+                        <option value="cash">Tiền Mặt</option>
+                        <option value="debitcard">Thẻ Ghi Nợ</option>
+                        <option value="creditcard">Thẻ Tín Dụng</option>
+                        <option value="epayment">Thanh Toán Điện Tử</option>
+                        <option value="onlinebanking">Ngân Hàng Trực Tuyến</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Thể Loại</label>
+                    <select class="form-control" name="category" id="category" required>
+                        <option selected hidden>Chọn Thể Loại</option>
+                        <option value="food">Thức Ăn</option>
+                        <option value="entertainment">Giải Trí</option>
+                        <option value="business">Kinh Doanh</option>
+                        <option value="rent">Thuê Nhà</option>
+                        <option value="EMI">EMI</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+
+                <input class="btn btn-danger" type="submit" value="Thêm">
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="imagge">
+                <img width="90%" height="90%" src="{{ url_for('static', filename='images/addd.jpg') }}" class="rounded float-left" alt="Hình Ảnh Thêm Chi Phí">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

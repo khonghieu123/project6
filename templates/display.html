@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="container">
+    <h3 class="mt-3">CHI TIÊU</h3>
+
+    {% if expense is defined %}
+        {% for row in expense %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow-sm mb-2 bg-white rounded">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <span class="btn btn-outline-dark">{{ row[2] }}</span>
+                                </div>
+                                <div class="col-md-2 mt-3"><h6>{{ row[3] }}</h6></div>
+                               <div class="col-md-2 mt-3">₫<span style="color: rgb(255, 0, 0)">{{ row[4] }}</span></div>
+                                <div class="col-md-2 mt-3">
+                                    <span class="badge badge-pill badge-info">{{ row[5] }}</span>
+                                </div>
+                                <div class="col-md-2 mt-3">
+                                    <span class="badge badge-primary">{{ row[6] }}</span>
+                                </div>
+                                <div class="col-md-1 mt-3">
+                                    <a href="/edit/{{ row[0] }}" class="btn btn-sm btn-success">Chỉnh Sửa</a>
+                                </div>
+                                <div class="col-md-1 mt-3">
+                                    <a href="/delete/{{ row[0] }}" class="btn btn-sm btn-danger">Xóa</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card shadow-sm mb-2 bg-white rounded">
+            <div class="card-body text-center" style="font-family: monospace; color:red;">
+                <h5><a href="/add">THÊM DỮ LIỆU</a> để hiển thị</h5>
+                <img width="60%" src="../static/images/not-found.png">
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="mt-5">Phân Tích Chi Tiêu</h3>
+
+            {% for label, value in {'Thức Ăn': t_food, 'Giải Trí': t_entertainment, 'Kinh Doanh': t_business, 'Tiền Thuê': t_rent, 'EMI': t_EMI, 'Khác': t_other}.items() %}
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">{{ label }}</div>
+                            <div class="col-md-6">{{ value }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="card shadow mb-2 btn-outline-danger rounded-pill">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">Tổng</div>
+                        <div class="col-md-6"> VND </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <canvas id="myChart" width="400" height="400"></canvas>
+            <script>
+                let categories = {
+                    'Thức Ăn': document.getElementById('tfood').innerHTML,
+                    'Giải Trí': document.getElementById('tentertainment').innerHTML,
+                    'Kinh Doanh': document.getElementById('tbusiness').innerHTML,
+                    'Tiền Thuê': document.getElementById('trent').innerHTML,
+                    'EMI': document.getElementById('temi').innerHTML,
+                    'Khác': document.getElementById('tother').innerHTML
+                };
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(categories),
+                        datasets: [{
+                            label: 'Biểu Đồ Chi Tiêu',
+                            data: Object.values(categories),
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(0, 0, 0)',
+                                'rgb(255, 205, 86)',
+                                'rgb(201, 203, 207)',
+                                'rgb(54, 162, 235)',
+                                'rgb(215, 159, 64)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: true,
+                                text: 'PHÂN TÍCH CHI TIÊU'
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <h3 class="mt-5">Phân Tích Chi Phí THÁNG</h3>
+
+            <div class="card shadow mb-2 bg-white rounded-pill">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">NGÀY</div>
+                        <div class="col-md-6">SỐ TIỀN</div>
+                    </div>
+                </div>
+            </div>
+
+            {% for row in texpense %}
+            <div class="card shadow mb-2 bg-white rounded-bottom">
+                <div class="card-body">
+                    <div class="row">
+                        <div id="ttime-{{ loop.index }}" class="col-md-6">{{ row[0] }}</div>
+                        <div id="tamount-{{ loop.index }}" class="col-md-6">{{ row[1] }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <section>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="mt-5">Phân Tích Chi Phí THEO Danh Mục</h3>
+
+                {% for category, amount in {'Thức ăn': t_food, 'Giải trí': t_entertainment, 'Kinh doanh': t_business, 'Thuê nhà': t_rent, 'EMI': t_EMI, 'Khác': t_other}.items() %}
+                <div class="card shadow mb-2 bg-white rounded">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">{{ category }}</div>
+                            <div id="t{{ category.lower() }}" class="col-md-6">{{ amount }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="card shadow mb-2 btn-outline-danger rounded-pill">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">Tổng cộng</div>
+                            <div class="col-md-6">₫ {{ total }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <canvas id="myChart" width="400" height="400"></canvas>
+                <script>
+                    const chartData = {
+                        labels: ['Thức ăn', 'Giải trí', 'Kinh doanh', 'Thuê nhà', 'EMI', 'Khác'],
+                        datasets: [{
+                            label: 'Biểu Đồ Chi Phí',
+                            data: [
+                                {{ t_food }},
+                                {{ t_entertainment }},
+                                {{ t_business }},
+                                {{ t_rent }},
+                                {{ t_EMI }},
+                                {{ t_other }}
+                            ],
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(0, 0, 0)',
+                                'rgb(255, 205, 86)',
+                                'rgb(201, 203, 207)',
+                                'rgb(54, 162, 235)',
+                                'rgb(215, 159, 64)'
+                            ]
+                        }]
+                    };
+
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                    const myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { position: 'bottom' },
+                                title: { display: true, text: 'PHÂN TÍCH CHI PHÍ' }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %} 
+
+<div class="container text-center mt-5">
+    <p>Giới hạn hàng tháng của bạn hiện tại là {{y}} VNĐ</p>
+
+    <form action="/limitnum" method="POST">
+        <p>Nhập giới hạn hàng tháng để tránh chi tiêu vượt mức</p>
+        <br/>
+        <div class="form-group">
+            <label for="monthlyLimit">Giới hạn hàng tháng (VNĐ):</label>
+            <input type="number" id="monthlyLimit" name="number" required class="form-control" placeholder="Nhập giới hạn của bạn" />
+        </div>
+        <span>
+            <button class="btn btn-warning mt-2" type="submit">NHẬP</button>
+        </span>
+    </form>
+</div>
+
+{% endblock %}
